@@ -1,4 +1,4 @@
-package de.dhbw.vigan.calendar.services;
+package de.dhbw.vigan.calendar.core.services;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -22,6 +22,9 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @see IGoogleCalendarService
+ */
 public class GoogleCalendarService implements IGoogleCalendarService {
     private static final String APP_NAME = "Google Calendar";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
