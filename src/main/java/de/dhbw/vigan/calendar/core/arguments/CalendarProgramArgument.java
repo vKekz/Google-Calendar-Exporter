@@ -1,4 +1,4 @@
-package de.dhbw.vigan.calendar.core.handler;
+package de.dhbw.vigan.calendar.core.arguments;
 
 /**
  * Represents the type of program argument.

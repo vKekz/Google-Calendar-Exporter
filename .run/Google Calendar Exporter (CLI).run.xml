@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Google Calendar (CLI)" type="Application" factoryName="Application">
+  <configuration default="false" name="Google Calendar Exporter (CLI)" type="Application" factoryName="Application">
     <option name="ALTERNATIVE_JRE_PATH" value="24" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="de.dhbw.vigan.calendar.Main" />
     <module name="Google-Calendar.main" />
-    <option name="PROGRAM_PARAMETERS" value="2025-08-01 2025-09-01 export.ics" />
+    <option name="PROGRAM_PARAMETERS" value="2025-08-01 2025-10-02 export.ics" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="de.dhbw.vigan.calendar.core.handler.impl.*" />

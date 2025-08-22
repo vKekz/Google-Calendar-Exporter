@@ -5,7 +5,7 @@ package de.dhbw.vigan.calendar.core.handler;
  */
 public interface ICalendarHandler {
     /**
-     * Handles the calendar program using the supplied start options.
+     * Handles the given handler using the supplied start options.
      */
     void handle(CalendarOptions options);
 }
