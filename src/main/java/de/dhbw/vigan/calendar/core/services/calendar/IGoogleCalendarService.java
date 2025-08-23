@@ -20,5 +20,5 @@ public interface IGoogleCalendarService {
     /**
      * Returns the list of calendar IDs owned by the user (determined by credentials.json).
      */
-    List<String> getCalendarIds();
+    List<String> getCalendarIds() throws Exception;
 }

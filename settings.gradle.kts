@@ -1,1 +1,1 @@
-rootProject.name = "Google-Calendar"
+rootProject.name = "Google-Calendar-Exporter"

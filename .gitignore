@@ -5,6 +5,7 @@ build/
 !**/src/test/**/build/
 src/main/resources/credentials.json
 tokens/
+export.ics
 
 ### IntelliJ IDEA ###
 .idea/

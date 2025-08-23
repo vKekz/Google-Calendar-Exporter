@@ -1,14 +1,18 @@
 package de.dhbw.vigan.calendar.ui.dialogs;
 
+import de.dhbw.vigan.calendar.ui.ApplicationUi;
+
 import javax.swing.*;
 
 public class AboutDialog extends JDialog {
-    public AboutDialog() {
+    public AboutDialog(ApplicationUi applicationUi) {
         setTitle("About");
-        setSize(256, 128);
+        setSize(300, 128);
+        setResizable(false);
         setLocationRelativeTo(null);
+        setIconImage(applicationUi.getIconImage());
 
-        JLabel aboutLabel = new JLabel("<html>Developer: Vigan Veliu<br>Version: 1.0</html>", SwingConstants.CENTER);
+        JLabel aboutLabel = new JLabel("<html>Developer: Vigan Veliu<br>Version: 1.0<br>https://www.svgrepo.com/svg/49397/calendar</html>", SwingConstants.CENTER);
         add(aboutLabel);
     }
 }

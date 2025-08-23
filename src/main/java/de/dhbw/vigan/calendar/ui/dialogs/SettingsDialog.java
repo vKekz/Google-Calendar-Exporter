@@ -1,13 +1,17 @@
 package de.dhbw.vigan.calendar.ui.dialogs;
 
+import de.dhbw.vigan.calendar.ui.ApplicationUi;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class SettingsDialog extends JDialog {
-    public SettingsDialog() {
+    public SettingsDialog(ApplicationUi applicationUi) {
         setTitle("Settings");
         setSize(256, 128);
+        setResizable(false);
         setLayout(new FlowLayout());
         setLocationRelativeTo(null);
+        setIconImage(applicationUi.getIconImage());
     }
 }

@@ -13,6 +13,7 @@ import com.google.api.services.calendar.model.Event;
 import de.dhbw.vigan.calendar.core.dto.CalendarEntry;
 import de.dhbw.vigan.calendar.core.services.credentials.IGoogleCredentialsService;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -76,10 +77,7 @@ public class GoogleCalendarService implements IGoogleCalendarService {
 
     @Override
     public String getCalenderIdByName(String calenderName) throws Exception {
-        CalendarList calendarList = calendar.calendarList().list().execute();
-        List<CalendarListEntry> calendars = calendarList.getItems();
-
-        for (CalendarListEntry calendar : calendars) {
+        for (CalendarListEntry calendar : getCalendars()) {
             if (calendar.getSummary().equalsIgnoreCase(calenderName)) {
                 return calendar.getId();
             }
@@ -89,7 +87,12 @@ public class GoogleCalendarService implements IGoogleCalendarService {
     }
 
     @Override
-    public List<String> getCalendarIds() {
-        return List.of();
+    public List<String> getCalendarIds() throws Exception {
+        return getCalendars().stream().map(CalendarListEntry::getId).toList();
+    }
+
+    private List<CalendarListEntry> getCalendars() throws IOException {
+        CalendarList calendarList = calendar.calendarList().list().execute();
+        return calendarList.getItems();
     }
 }

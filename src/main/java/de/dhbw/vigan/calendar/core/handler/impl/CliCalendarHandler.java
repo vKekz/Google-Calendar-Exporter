@@ -1,6 +1,7 @@
 package de.dhbw.vigan.calendar.core.handler.impl;
 
 import de.dhbw.vigan.calendar.core.dto.CalendarEntry;
+import de.dhbw.vigan.calendar.core.handler.CalendarConstants;
 import de.dhbw.vigan.calendar.core.handler.CalendarOptions;
 import de.dhbw.vigan.calendar.core.handler.ICalendarHandler;
 import de.dhbw.vigan.calendar.core.services.calendar.IGoogleCalendarService;
@@ -14,10 +15,18 @@ import java.util.logging.Logger;
  * <p>
  * This handler will read the events from the primary calendar and export it to the given file.
  */
-public record CliCalendarHandler(Logger logger, IGoogleCalendarService googleCalendarService, ICalendarExportService exportService) implements ICalendarHandler {
+public record CliCalendarHandler(
+        Logger logger,
+        IGoogleCalendarService googleCalendarService,
+        ICalendarExportService exportService
+) implements ICalendarHandler {
+
     @Override
     public void handle(CalendarOptions options) {
-        List<CalendarEntry> entries = googleCalendarService.getCalendarEntries("primary", options.StartDate, options.EndDate);
+        List<CalendarEntry> entries = googleCalendarService.getCalendarEntries(
+                CalendarConstants.PRIMARY_CALENDAR_ID,
+                options.StartDate,
+                options.EndDate);
         exportService.Export(entries, options.ExportFileName);
     }
 }

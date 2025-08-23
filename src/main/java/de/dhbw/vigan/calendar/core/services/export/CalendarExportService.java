@@ -13,8 +13,6 @@ import java.util.logging.Logger;
 public record CalendarExportService(Logger logger) implements ICalendarExportService {
     @Override
     public void Export(List<CalendarEntry> entries, String exportFileName) {
-        logger.info("Exporting to file " + exportFileName);
-
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("BEGIN:VCALENDAR\n");
         stringBuilder.append("VERSION:2.0\n");
@@ -39,8 +37,9 @@ public record CalendarExportService(Logger logger) implements ICalendarExportSer
 
         try (FileWriter fileWriter = new FileWriter(exportFileName)) {
             fileWriter.write(stringBuilder.toString());
+            logger.info("Exported " + entries.size() + " entries to " + exportFileName);
         } catch (IOException e) {
-
+            logger.warning("Could not export calendar to file " + exportFileName);
         }
     }
 }
