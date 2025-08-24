@@ -15,12 +15,7 @@ import java.util.logging.Logger;
  * <p>
  * This handler will read the events from the primary calendar and export it to the given file.
  */
-public record CliCalendarHandler(
-        Logger logger,
-        IGoogleCalendarService googleCalendarService,
-        ICalendarExportService exportService
-) implements ICalendarHandler {
-
+public record CliCalendarHandler(Logger logger, IGoogleCalendarService googleCalendarService, ICalendarExportService exportService) implements ICalendarHandler {
     @Override
     public void handle(CalendarOptions options) {
         List<CalendarEntry> entries = googleCalendarService.getCalendarEntries(

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @see IGoogleCalendarService
@@ -27,13 +28,18 @@ public class GoogleCalendarService implements IGoogleCalendarService {
 
     private final Calendar calendar;
 
-    public GoogleCalendarService(IGoogleCredentialsService credentialsService) throws Exception {
-        NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        Credential credential = credentialsService.getCredentials(httpTransport);
+    public GoogleCalendarService(Logger logger, IGoogleCredentialsService credentialsService) {
+        try {
+            NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+            Credential credential = credentialsService.getCredentials(httpTransport);
 
-        this.calendar = new Calendar.Builder(httpTransport, JSON_FACTORY, credential)
-                .setApplicationName(APP_NAME)
-                .build();
+            this.calendar = new Calendar.Builder(httpTransport, JSON_FACTORY, credential)
+                    .setApplicationName(APP_NAME)
+                    .build();
+        } catch (Exception e) {
+            logger.severe("Error while creating Google Calendar service: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
 
         // TODO: Pre-fetch calendars?
     }

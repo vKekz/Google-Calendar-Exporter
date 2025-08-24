@@ -1,15 +1,15 @@
-package de.dhbw.vigan.calendar.core.arguments;
+package de.dhbw.vigan.calendar.core.handler;
 
 import java.util.HashMap;
 
 /**
- * Represents a helper class that is used to load program arguments.
+ * Represents a helper class that is used to parse program arguments to {@link CalendarOptions}.
  */
-public final class CalendarProgramArgumentsParser {
+public final class CalendarOptionsParser {
     /**
-     * Parses the program arguments by creating a hashmap and saving each keyword.
+     * Parses the program arguments to {@link CalendarOptions} by creating a hashmap and saving each keyword.
      */
-    public static HashMap<String, String> parseArguments(String[] args) {
+    public static CalendarOptions parse(String[] args) {
         validateArguments(args);
 
         int length = CalendarProgramArgument.values().length;
@@ -24,7 +24,7 @@ public final class CalendarProgramArgumentsParser {
             arguments.put(argument.getKeyWord(), args[i]);
         }
 
-        return arguments;
+        return new CalendarOptions(arguments);
     }
 
     /**
