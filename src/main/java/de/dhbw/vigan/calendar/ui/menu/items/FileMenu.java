@@ -3,7 +3,7 @@ package de.dhbw.vigan.calendar.ui.menu.items;
 import javax.swing.*;
 
 /**
- * Represents the file menu item.
+ * Represents the file menu bar item.
  */
 public class FileMenu extends JMenu {
 

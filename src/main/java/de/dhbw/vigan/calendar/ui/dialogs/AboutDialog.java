@@ -4,6 +4,9 @@ import de.dhbw.vigan.calendar.ui.ApplicationUi;
 
 import javax.swing.*;
 
+/**
+ * Represents the About window.
+ */
 public class AboutDialog extends JDialog {
     public AboutDialog(ApplicationUi applicationUi) {
         setTitle("About");
@@ -14,5 +17,7 @@ public class AboutDialog extends JDialog {
 
         JLabel aboutLabel = new JLabel("<html>Developer: Vigan Veliu<br>Version: 1.0<br>https://www.svgrepo.com/svg/49397/calendar</html>", SwingConstants.CENTER);
         add(aboutLabel);
+
+        // TODO: Make prettier
     }
 }

@@ -5,6 +5,9 @@ import de.dhbw.vigan.calendar.ui.dialogs.SettingsDialog;
 
 import javax.swing.*;
 
+/**
+ * Represents the application menu bar item for settings.
+ */
 public class ApplicationMenu extends JMenu {
     public ApplicationMenu(ApplicationUi applicationUi) {
         setText("Application");

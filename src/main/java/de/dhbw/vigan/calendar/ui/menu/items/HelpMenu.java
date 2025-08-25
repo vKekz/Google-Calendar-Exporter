@@ -5,6 +5,9 @@ import de.dhbw.vigan.calendar.ui.dialogs.AboutDialog;
 
 import javax.swing.*;
 
+/**
+ * Represents the help menu bar item.
+ */
 public class HelpMenu extends JMenu {
     public HelpMenu(ApplicationUi applicationUi) {
         setText("Help");

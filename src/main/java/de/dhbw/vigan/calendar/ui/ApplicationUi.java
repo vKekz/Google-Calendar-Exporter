@@ -29,6 +29,7 @@ public class ApplicationUi extends JFrame {
         setLocationRelativeTo(null);
         setIcon();
         setJMenuBar(new MenuBar(this));
+        add(new JScrollPane(new CalendarTable()), BorderLayout.CENTER);
     }
 
     private void setIcon() {
