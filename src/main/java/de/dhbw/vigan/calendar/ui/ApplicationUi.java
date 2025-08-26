@@ -1,6 +1,7 @@
 package de.dhbw.vigan.calendar.ui;
 
 import de.dhbw.vigan.calendar.Main;
+import de.dhbw.vigan.calendar.core.handler.CalendarOptions;
 import de.dhbw.vigan.calendar.core.services.calendar.IGoogleCalendarService;
 import de.dhbw.vigan.calendar.core.services.export.ICalendarExportService;
 import de.dhbw.vigan.calendar.ui.menu.MenuBar;
@@ -14,7 +15,11 @@ import java.io.InputStream;
  * Represents the application UI window.
  */
 public class ApplicationUi extends JFrame {
-    public ApplicationUi(IGoogleCalendarService googleCalendarService, ICalendarExportService exportService) {
+    public CalendarOptions options;
+
+    public ApplicationUi(IGoogleCalendarService googleCalendarService, ICalendarExportService exportService, CalendarOptions options) {
+        this.options = options;
+
         initialize();
     }
 

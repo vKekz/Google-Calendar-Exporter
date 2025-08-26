@@ -6,7 +6,6 @@ import javax.swing.*;
  * Represents the file menu bar item.
  */
 public class FileMenu extends JMenu {
-
     public FileMenu() {
         setText("File");
 

@@ -9,7 +9,8 @@ import javax.swing.*;
  */
 public class AboutDialog extends JDialog {
     public AboutDialog(ApplicationUi applicationUi) {
-        setTitle("About");
+        super(applicationUi, "About", true);
+
         setSize(300, 128);
         setResizable(false);
         setLocationRelativeTo(null);
