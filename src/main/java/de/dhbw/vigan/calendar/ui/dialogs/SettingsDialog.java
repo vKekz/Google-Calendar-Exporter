@@ -1,7 +1,7 @@
 package de.dhbw.vigan.calendar.ui.dialogs;
 
 import de.dhbw.vigan.calendar.ui.ApplicationUi;
-import de.dhbw.vigan.calendar.ui.CalendarSettings;
+import de.dhbw.vigan.calendar.core.services.settings.CalendarSettings;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

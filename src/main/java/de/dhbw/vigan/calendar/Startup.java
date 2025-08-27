@@ -37,7 +37,7 @@ public class Startup {
         ICalendarHandler calendarHandler;
         if (options.useGui) {
             // If requested by the user, use the given GUI calendar handler otherwise the default CLI handler
-            ApplicationUi ui = new ApplicationUi(googleCalendarService, exportService, options);
+            ApplicationUi ui = new ApplicationUi(logger, googleCalendarService, exportService, options);
             calendarHandler = new GuiCalendarHandler(logger, ui);
             logger.info("Handling GUI ...");
         } else {

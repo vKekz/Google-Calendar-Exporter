@@ -26,9 +26,12 @@ public class GoogleCalendarService implements IGoogleCalendarService {
     private static final String APP_NAME = "Google Calendar";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
+    private final Logger logger;
     private final Calendar calendar;
 
     public GoogleCalendarService(Logger logger, IGoogleCredentialsService credentialsService) {
+        this.logger = logger;
+
         try {
             NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
             Credential credential = credentialsService.getCredentials(httpTransport);
@@ -47,6 +50,8 @@ public class GoogleCalendarService implements IGoogleCalendarService {
     @Override
     public List<CalendarEntry> getCalendarEntries(String calenderId, LocalDate startDate, LocalDate endDate) {
         try {
+            logger.info("Getting calendar entries for calendar ID: " + calenderId);
+
             // Datetime needs a specific time
             LocalTime now = LocalTime.now();
             DateTime start = new DateTime(startDate.atTime(now).toString());
@@ -66,12 +71,12 @@ public class GoogleCalendarService implements IGoogleCalendarService {
                     .stream()
                     .map(event -> new CalendarEntry(
                             event.getSummary(),
-                            event.getStart().toString(),
-                            event.getEnd().toString(),
-                            event.getCreated().toStringRfc3339(),
+                            event.getStart(),
+                            event.getEnd(),
+                            event.getCreated(),
                             event.getICalUID(),
                             event.getDescription(),
-                            event.getUpdated().toStringRfc3339(),
+                            event.getUpdated(),
                             event.getSequence(),
                             event.getStatus(),
                             event.getTransparency()))

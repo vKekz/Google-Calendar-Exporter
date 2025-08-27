@@ -1,16 +1,19 @@
 package de.dhbw.vigan.calendar.core.dto;
 
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.EventDateTime;
+
 /**
  * Represents a calendar entry.
  */
 public record CalendarEntry(
         String summary,
-        String startDateTime,
-        String endDateTime,
-        String createdDateTime,
+        EventDateTime startDateTime,
+        EventDateTime endDateTime,
+        DateTime createdDateTime,
         String id,
         String description,
-        String lastModifiedTime,
+        DateTime lastModifiedTime,
         int sequence,
         String status,
         String transparency) {}
