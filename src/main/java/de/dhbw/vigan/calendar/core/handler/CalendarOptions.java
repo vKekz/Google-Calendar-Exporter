@@ -7,20 +7,20 @@ import java.util.HashMap;
  * Represents the options that can be supplied via program arguments.
  */
 public class CalendarOptions {
-    public LocalDate StartDate;
-    public LocalDate EndDate;
-    public String ExportFileName;
-    public boolean UseGui;
+    public LocalDate startDate;
+    public LocalDate endDate;
+    public String exportFileName;
+    public boolean useGui;
 
     public CalendarOptions(HashMap<String, String> arguments) {
-        StartDate = LocalDate.parse(arguments.get(CalendarProgramArgument.START_DATE.getKeyWord()));
-        EndDate = LocalDate.parse(arguments.get(CalendarProgramArgument.END_DATE.getKeyWord()));
-        ExportFileName = arguments.get(CalendarProgramArgument.EXPORT_FILE_NAME.getKeyWord());
-        UseGui = arguments.containsKey(CalendarProgramArgument.USE_GUI.getKeyWord());
+        startDate = LocalDate.parse(arguments.get(CalendarProgramArgument.START_DATE.getKeyWord()));
+        endDate = LocalDate.parse(arguments.get(CalendarProgramArgument.END_DATE.getKeyWord()));
+        exportFileName = arguments.get(CalendarProgramArgument.EXPORT_FILE_NAME.getKeyWord());
+        useGui = arguments.containsKey(CalendarProgramArgument.USE_GUI.getKeyWord());
     }
 
     @Override
     public String toString() {
-        return "Gui: " + UseGui + " | StartDate: " + StartDate + " | EndDate: " + EndDate + " | File: " + ExportFileName;
+        return "Gui: " + useGui + " | StartDate: " + startDate + " | EndDate: " + endDate + " | File: " + exportFileName;
     }
 }

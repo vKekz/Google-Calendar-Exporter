@@ -35,13 +35,13 @@ public class Startup {
         IGoogleCalendarService googleCalendarService = new GoogleCalendarService(logger, new GoogleCredentialsService());
         ICalendarExportService exportService = new CalendarExportService(logger);
         ICalendarHandler calendarHandler;
-        if (options.UseGui) {
+        if (options.useGui) {
             // If requested by the user, use the given GUI calendar handler otherwise the default CLI handler
             ApplicationUi ui = new ApplicationUi(googleCalendarService, exportService, options);
             calendarHandler = new GuiCalendarHandler(logger, ui);
             logger.info("Handling GUI ...");
         } else {
-            calendarHandler = new CliCalendarHandler(logger, googleCalendarService, exportService);
+            calendarHandler = new CliCalendarHandler(googleCalendarService, exportService);
             logger.info("Handling CLI ...");
         }
 

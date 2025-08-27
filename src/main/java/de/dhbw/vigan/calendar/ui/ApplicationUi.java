@@ -16,9 +16,11 @@ import java.io.InputStream;
  */
 public class ApplicationUi extends JFrame {
     public CalendarOptions options;
+    public CalendarSettings settings;
 
     public ApplicationUi(IGoogleCalendarService googleCalendarService, ICalendarExportService exportService, CalendarOptions options) {
         this.options = options;
+        this.settings = new CalendarSettings(options);
 
         initialize();
     }
