@@ -12,7 +12,7 @@ import javax.swing.*;
  */
 public class MenuBar extends JMenuBar {
     public MenuBar(ApplicationUi applicationUi) {
-        add(new FileMenu());
+        add(new FileMenu(applicationUi));
         add(new ApplicationMenu(applicationUi));
         add(new HelpMenu(applicationUi));
     }

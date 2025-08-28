@@ -10,8 +10,14 @@ public class CalendarTable extends JTable {
     private final DefaultTableModel model;
 
     public CalendarTable() {
-        String[] columns = { "Ereignis", "Von", "Bis" };
-        model = new DefaultTableModel(columns, 0);
+        String[] columns = { "Ereignis", "von", "bis" };
+        model = new DefaultTableModel(columns, 0) {
+            // This overrides the default behaviour, so that cells are no longer editable
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         setModel(model);
 
         getTableHeader().setReorderingAllowed(false);
@@ -23,5 +29,9 @@ public class CalendarTable extends JTable {
         String formatedEndTime = GoogleDateTimeFormatter.formatEventDateTime(entry.endDateTime());
 
         model.addRow(new Object[] { entry.summary(), formatedStartTime, formatedEndTime });
+    }
+
+    public void clearRows() {
+        model.setRowCount(0);
     }
 }

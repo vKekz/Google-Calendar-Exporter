@@ -1,63 +1,77 @@
 package de.dhbw.vigan.calendar.ui.dialogs;
 
-import de.dhbw.vigan.calendar.ui.ApplicationUi;
 import de.dhbw.vigan.calendar.core.services.settings.CalendarSettings;
+import de.dhbw.vigan.calendar.ui.ApplicationUi;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  * Represents the Settings window.
  */
 public class SettingsDialog extends JDialog {
-    private final CalendarSettings settings;
+    private final CalendarSettings newSettings = new CalendarSettings();
+    private final ApplicationUi applicationUi;
 
     private JTextField calendarUrl;
+    private JTextField exportFile;
+    private JSpinner startDate;
+    private JSpinner endDate;
 
     public SettingsDialog(ApplicationUi applicationUi) {
         // This is needed so that the user is not able to select the main application until the settings windows is closed
         super(applicationUi, "Settings", true);
 
-        settings = applicationUi.settings;
+        this.applicationUi = applicationUi;
 
-        // setSize(512, 256);
+        setSize(400, 250);
         setResizable(false);
         setLocationRelativeTo(applicationUi);
         setIconImage(applicationUi.getIconImage());
 
         setupSettingsPanel(applicationUi);
-        setupButtonsPanel(applicationUi);
+        setupButtonsPanel();
 
-        pack();
     }
 
     private void setupSettingsPanel(ApplicationUi applicationUi) {
         JPanel settingsPanel = new JPanel(new GridLayout(5, 2, 10, 5));
         settingsPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
 
+        CalendarSettings settings = applicationUi.settingsService.getSettings();
+
         settingsPanel.add(new JLabel("Calendar URL:"));
-        calendarUrl = new JTextField();
+        calendarUrl = new JTextField(settings.calendarUrl);
         settingsPanel.add(calendarUrl);
 
         settingsPanel.add(new JLabel("Export file name:"));
-        JTextField exportFile = new JTextField(applicationUi.options.exportFileName);
+        exportFile = new JTextField(settings.exportFileName);
         settingsPanel.add(exportFile);
 
         settingsPanel.add(new JLabel("Start date:"));
-        JSpinner startDate = new JSpinner(new SpinnerDateModel());
+        startDate = new JSpinner(new SpinnerDateModel());
+        if (settings.startDate != null) {
+            startDate.setValue(parseLocalDate(settings.startDate));
+        }
         settingsPanel.add(startDate);
 
         settingsPanel.add(new JLabel("End date:"));
-        JSpinner endDate = new JSpinner(new SpinnerDateModel());
+        endDate = new JSpinner(new SpinnerDateModel());
+        if (settings.endDate != null) {
+            endDate.setValue(parseLocalDate(settings.endDate));
+        }
         settingsPanel.add(endDate);
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(settingsPanel, BorderLayout.CENTER);
     }
 
-    private void setupButtonsPanel(ApplicationUi applicationUi) {
+    private void setupButtonsPanel() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         JButton loadButton = new JButton("Load");
@@ -81,6 +95,19 @@ public class SettingsDialog extends JDialog {
     }
 
     private void saveSettings() {
-        settings.calendarUrl = calendarUrl.getText();
+        newSettings.calendarUrl = calendarUrl.getText();
+        newSettings.exportFileName = exportFile.getText();
+        newSettings.startDate = parseSpinnerDateModel((SpinnerDateModel)startDate.getModel());
+        newSettings.endDate = parseSpinnerDateModel((SpinnerDateModel)endDate.getModel());
+
+        applicationUi.saveSettings(newSettings);
+    }
+
+    private LocalDate parseSpinnerDateModel(SpinnerDateModel dateModel) {
+        return dateModel.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    private Date parseLocalDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }

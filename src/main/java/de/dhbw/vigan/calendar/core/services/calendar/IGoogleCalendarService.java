@@ -14,11 +14,7 @@ public interface IGoogleCalendarService {
      */
     List<CalendarEntry> getCalendarEntries(String calenderId, LocalDate startDate, LocalDate endDate);
     /**
-     * Returns the ID of the given calendar.
+     * Returns a list of the most recently loaded entries.
      */
-    String getCalenderIdByName(String calenderName) throws Exception;
-    /**
-     * Returns the list of calendar IDs owned by the user (determined by credentials.json).
-     */
-    List<String> getCalendarIds() throws Exception;
+    List<CalendarEntry> getMostRecentEntries();
 }

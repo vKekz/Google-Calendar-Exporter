@@ -7,15 +7,13 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
-import com.google.api.services.calendar.model.CalendarList;
-import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
 import de.dhbw.vigan.calendar.core.dto.CalendarEntry;
 import de.dhbw.vigan.calendar.core.services.credentials.IGoogleCredentialsService;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -29,6 +27,8 @@ public class GoogleCalendarService implements IGoogleCalendarService {
     private final Logger logger;
     private final Calendar calendar;
 
+    private List<CalendarEntry> mostRecentEntries = new ArrayList<>();
+
     public GoogleCalendarService(Logger logger, IGoogleCredentialsService credentialsService) {
         this.logger = logger;
 
@@ -37,14 +37,12 @@ public class GoogleCalendarService implements IGoogleCalendarService {
             Credential credential = credentialsService.getCredentials(httpTransport);
 
             this.calendar = new Calendar.Builder(httpTransport, JSON_FACTORY, credential)
-                    .setApplicationName(APP_NAME)
-                    .build();
+                                        .setApplicationName(APP_NAME)
+                                        .build();
         } catch (Exception e) {
             logger.severe("Error while creating Google Calendar service: " + e.getMessage());
             throw new RuntimeException(e);
         }
-
-        // TODO: Pre-fetch calendars?
     }
 
     @Override
@@ -67,7 +65,7 @@ public class GoogleCalendarService implements IGoogleCalendarService {
                     .getItems();
 
             // Map events to custom calendar entry DTO
-            return events
+            List<CalendarEntry> entries = events
                     .stream()
                     .map(event -> new CalendarEntry(
                             event.getSummary(),
@@ -81,29 +79,17 @@ public class GoogleCalendarService implements IGoogleCalendarService {
                             event.getStatus(),
                             event.getTransparency()))
                     .toList();
+
+            mostRecentEntries = entries;
+
+            return entries;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public String getCalenderIdByName(String calenderName) throws Exception {
-        for (CalendarListEntry calendar : getCalendars()) {
-            if (calendar.getSummary().equalsIgnoreCase(calenderName)) {
-                return calendar.getId();
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public List<String> getCalendarIds() throws Exception {
-        return getCalendars().stream().map(CalendarListEntry::getId).toList();
-    }
-
-    private List<CalendarListEntry> getCalendars() throws IOException {
-        CalendarList calendarList = calendar.calendarList().list().execute();
-        return calendarList.getItems();
+    public List<CalendarEntry> getMostRecentEntries() {
+        return mostRecentEntries;
     }
 }

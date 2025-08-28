@@ -2,15 +2,16 @@ package de.dhbw.vigan.calendar.ui;
 
 import de.dhbw.vigan.calendar.Main;
 import de.dhbw.vigan.calendar.core.dto.CalendarEntry;
-import de.dhbw.vigan.calendar.core.handler.CalendarConstants;
-import de.dhbw.vigan.calendar.core.handler.CalendarOptions;
 import de.dhbw.vigan.calendar.core.services.calendar.IGoogleCalendarService;
 import de.dhbw.vigan.calendar.core.services.export.ICalendarExportService;
 import de.dhbw.vigan.calendar.core.services.settings.CalendarSettings;
+import de.dhbw.vigan.calendar.core.services.settings.ISettingsService;
 import de.dhbw.vigan.calendar.ui.menu.MenuBar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -20,46 +21,48 @@ import java.util.logging.Logger;
  * Represents the application UI window.
  */
 public class ApplicationUi extends JFrame {
-    private final Logger logger;
-    private final IGoogleCalendarService googleCalendarService;
+    public final IGoogleCalendarService googleCalendarService;
+    public final ISettingsService settingsService;
+    public final ICalendarExportService calendarExportService;
 
+    private final Logger logger;
     private CalendarTable calendarTable;
 
-    public CalendarOptions options;
-    public CalendarSettings settings;
-
-    public ApplicationUi(Logger logger, IGoogleCalendarService googleCalendarService, ICalendarExportService exportService, CalendarOptions options) {
+    public ApplicationUi(Logger logger,
+                         IGoogleCalendarService googleCalendarService,
+                         ICalendarExportService exportService,
+                         ISettingsService settingsService) {
         this.logger = logger;
         this.googleCalendarService = googleCalendarService;
-
-        this.options = options;
-        this.settings = new CalendarSettings(options);
+        this.settingsService = settingsService;
+        this.calendarExportService = exportService;
 
         initialize();
-        loadEvents();
     }
 
     public void open() {
         setVisible(true);
     }
 
-    public void saveSettings() {
-
+    public void saveSettings(CalendarSettings newSettings) {
+        settingsService.saveSettings(newSettings);
+        loadEvents(newSettings);
     }
 
-    public void loadEvents() {
-        // List<CalendarEntry> entries = googleCalendarService.getCalendarEntries(settings.calendarUrl, settings.startDate, settings.endDate);
+    public void loadEvents(CalendarSettings settings) {
+        calendarTable.clearRows();
+
         List<CalendarEntry> entries = googleCalendarService.getCalendarEntries(
-                CalendarConstants.PRIMARY_CALENDAR_ID,
-                options.startDate,
-                options.endDate);
+                settings.calendarUrl,
+                settings.startDate,
+                settings.endDate);
         for (CalendarEntry entry : entries) {
             calendarTable.addEntry(entry);
         }
     }
 
     public void export() {
-
+        calendarExportService.Export(googleCalendarService.getMostRecentEntries(), settingsService.getSettings().exportFileName);
     }
 
     private void initialize() {
@@ -74,6 +77,13 @@ public class ApplicationUi extends JFrame {
 
         calendarTable = new CalendarTable();
         add(new JScrollPane(calendarTable), BorderLayout.CENTER);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                handleExit();
+            }
+        });
     }
 
     private void setIcon() {
@@ -88,5 +98,10 @@ public class ApplicationUi extends JFrame {
         } catch (IOException e) {
             logger.warning("Could not load icon image:  " + e.getMessage());
         }
+    }
+
+    private void handleExit() {
+        logger.info("Exiting Application UI...");
+        dispose();
     }
 }

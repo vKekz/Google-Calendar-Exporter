@@ -10,6 +10,8 @@ import de.dhbw.vigan.calendar.core.services.calendar.IGoogleCalendarService;
 import de.dhbw.vigan.calendar.core.services.credentials.GoogleCredentialsService;
 import de.dhbw.vigan.calendar.core.services.export.CalendarExportService;
 import de.dhbw.vigan.calendar.core.services.export.ICalendarExportService;
+import de.dhbw.vigan.calendar.core.services.settings.ISettingsService;
+import de.dhbw.vigan.calendar.core.services.settings.SettingsService;
 import de.dhbw.vigan.calendar.ui.ApplicationUi;
 
 import java.util.logging.Logger;
@@ -37,7 +39,8 @@ public class Startup {
         ICalendarHandler calendarHandler;
         if (options.useGui) {
             // If requested by the user, use the given GUI calendar handler otherwise the default CLI handler
-            ApplicationUi ui = new ApplicationUi(logger, googleCalendarService, exportService, options);
+            ISettingsService settingsService = new SettingsService();
+            ApplicationUi ui = new ApplicationUi(logger, googleCalendarService, exportService, settingsService);
             calendarHandler = new GuiCalendarHandler(logger, ui);
             logger.info("Handling GUI ...");
         } else {

@@ -2,6 +2,7 @@ package de.dhbw.vigan.calendar.core.services.export;
 
 import de.dhbw.vigan.calendar.core.dto.CalendarEntry;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -35,7 +36,18 @@ public record CalendarExportService(Logger logger) implements ICalendarExportSer
 
         stringBuilder.append("END:VCALENDAR");
 
-        try (FileWriter fileWriter = new FileWriter(exportFileName)) {
+        File exportFile = new File(exportFileName);
+        File parentDir = exportFile.getParentFile();
+
+        if (parentDir != null && !parentDir.exists()) {
+            if (parentDir.mkdirs()) {
+                logger.info("Created directory: " + parentDir.getAbsolutePath());
+            } else {
+                logger.warning("Could not create directory: " + parentDir.getAbsolutePath());
+            }
+        }
+
+        try (FileWriter fileWriter = new FileWriter(exportFile)) {
             fileWriter.write(stringBuilder.toString());
             logger.info("Exported " + entries.size() + " entries to " + exportFileName);
         } catch (IOException e) {
